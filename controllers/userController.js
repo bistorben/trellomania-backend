@@ -1,6 +1,8 @@
 import UserModel from "../models/userModel.js";
 import bcrypt from "bcrypt";
 
+// addUser controller
+
 const addUser = async (req, res, next) => {
   try {
     const registerData = req.body;
@@ -51,4 +53,29 @@ const addUser = async (req, res, next) => {
   }
 };
 
-export { addUser };
+//  login user controller
+
+const loginUser = async (req, res, next) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      const err = new Error("Email or password is wrong");
+      err.status = 401;
+      throw err;
+    }
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
+      const err = new Error("Email or password is wrong");
+      err.status = 401;
+      throw err;
+    }
+    res.send({ message: "Du bist eingeloggt!" });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+export { addUser, loginUser };
