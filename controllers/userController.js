@@ -1,5 +1,6 @@
 import UserModel from "../models/userModel.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 // addUser controller
 
@@ -71,6 +72,21 @@ const loginUser = async (req, res, next) => {
       err.status = 401;
       throw err;
     }
+
+    const tokenPayload = {
+      sub: user._id,
+      userName: user.userName,
+    };
+
+    const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, {
+      expiresIn: 60 * 5,
+    });
+
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60,
+    });
+
     res.send({ message: "Du bist eingeloggt!" });
   } catch (err) {
     console.log(err);
@@ -78,4 +94,8 @@ const loginUser = async (req, res, next) => {
   }
 };
 
-export { addUser, loginUser };
+const secret = (req, res, next) => {
+  res.send("Du darfst das nur lesen, wenn du eingeloggt bist");
+};
+
+export { addUser, loginUser, secret };

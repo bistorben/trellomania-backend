@@ -2,10 +2,11 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import morgan from "morgan";
+import cookieParser from "cookie-parser";
 import userRouter from "./routes/userRoutes.js";
 import errorHandler from "./middlewares/errorHandler.js";
 
-const server = express();
+const app = express();
 const PORT = 3000;
 
 // MongoDB connection
@@ -21,24 +22,30 @@ mongoose.connection.on("error", () => console.log("Database connection error"));
 
 // middlewares
 
-server.use(express.json());
-server.use(morgan("dev"));
-server.use(cors());
+app.use(express.json());
+app.use(morgan("dev"));
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: process.env.CLIENT || "http://localhost:5173",
+    credentials: true,
+  })
+);
 
 // routes
 
-server.use("/user", userRouter);
+app.use("/user", userRouter);
 
 // error handling middleware
 
-server.use((req, res, next) => {
+app.use((req, res, next) => {
   const err = new Error("This endpoint does not exist");
   err.status = 404;
   next(err);
 });
 
-server.use(errorHandler);
+app.use(errorHandler);
 
-server.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log("server is running");
 });
