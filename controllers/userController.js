@@ -79,7 +79,7 @@ const loginUser = async (req, res, next) => {
     };
 
     const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, {
-      expiresIn: 60 * 5,
+      expiresIn: 1000 * 60 * 60,
     });
 
     res.cookie("access_token", token, {
@@ -94,8 +94,13 @@ const loginUser = async (req, res, next) => {
   }
 };
 
+const logoutUser = async (req, res) => {
+  res.clearCookie("access_token").send({ message: "Logged Out" });
+  // res.send(req.cookies.access_token);
+};
+
 const secret = (req, res, next) => {
   res.send("Du darfst das nur lesen, wenn du eingeloggt bist");
 };
 
-export { addUser, loginUser, secret };
+export { addUser, loginUser, secret, logoutUser };
