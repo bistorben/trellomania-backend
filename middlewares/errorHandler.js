@@ -5,6 +5,11 @@ const errorHandler = (err, req, res, next) => {
   res.status(status).send({
     status,
     message: err.message,
+    ...(err.field !== undefined && { field: err.field }),
+    // wenn erster Bedingung zutrifft
+    // ...false --> NICHTS
+    // wenn zweite
+    // ...{field: err.field} --> field: err.field
   });
 };
 

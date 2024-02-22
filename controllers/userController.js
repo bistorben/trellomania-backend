@@ -13,7 +13,8 @@ const addUser = async (req, res, next) => {
       userName: registerData.userName,
     });
     if (existedUserName) {
-      const error = new Error("There is already a user with the user name");
+      const error = new Error("There is already a user with this user name");
+      error.field = "userName";
       error.status = 400;
       throw error;
     }
@@ -22,9 +23,8 @@ const addUser = async (req, res, next) => {
       email: registerData.email,
     });
     if (existedUserEmail) {
-      const error = new Error(
-        "There is already a user with the e-mail address"
-      );
+      const error = new Error("There is already a user with this e-mail");
+      error.field = "email";
       error.status = 400;
       throw error;
     }
