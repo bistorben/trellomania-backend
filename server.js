@@ -4,6 +4,7 @@ import cors from "cors";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/userRoutes.js";
+import boardRouter from "./routes/boardRouter.js";
 import errorHandler from "./middlewares/errorHandler.js";
 
 const app = express();
@@ -35,6 +36,7 @@ app.use(
 // routes
 
 app.use("/user", userRouter);
+app.use("/board", boardRouter);
 
 // error handling middleware
 

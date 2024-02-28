@@ -4,7 +4,9 @@ const verifyToken = (req, res, next) => {
   const token = req.cookies.access_token;
 
   try {
-    jwt.verify(token, process.env.JWT_SECRET);
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+
+    req.tokenPayload = payload;
 
     next();
   } catch (err) {

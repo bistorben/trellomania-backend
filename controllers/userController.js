@@ -87,7 +87,7 @@ const loginUser = async (req, res, next) => {
       maxAge: 1000 * 60 * 60,
     });
 
-    res.send({ message: "Du bist eingeloggt!" });
+    res.send({ message: "Du bist eingeloggt!", tokenPayload });
   } catch (err) {
     console.log(err);
     next(err);
@@ -99,8 +99,8 @@ const logoutUser = async (req, res) => {
   // res.send(req.cookies.access_token);
 };
 
-const secret = (req, res, next) => {
-  res.send("Du darfst das nur lesen, wenn du eingeloggt bist");
+const getAuthUser = (req, res, next) => {
+  res.send(req.tokenPayload);
 };
 
-export { addUser, loginUser, secret, logoutUser };
+export { addUser, loginUser, getAuthUser, logoutUser };
