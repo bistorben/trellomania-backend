@@ -5,6 +5,7 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/userRoutes.js";
 import boardRouter from "./routes/boardRouter.js";
+import listRouter from "./routes/listRouter.js";
 import errorHandler from "./middlewares/errorHandler.js";
 
 const app = express();
@@ -37,6 +38,7 @@ app.use(
 
 app.use("/user", userRouter);
 app.use("/board", boardRouter);
+app.use("/list", listRouter);
 
 // error handling middleware
 
