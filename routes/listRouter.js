@@ -8,7 +8,8 @@ import auth from "../middlewares/auth.js";
 
 const router = express.Router();
 
-router.route("/").get(auth, getAllLists).post(auth, addList);
+router.route("/").post(auth, addList);
+router.route("/:boardId").get(auth, getAllLists);
 router.route("/:id").delete(auth, deleteList);
 
 export default router;

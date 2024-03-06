@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 
 const boardSchema = new Schema({
   title: String,
-  userId: String,
+  lists: [{ type: Schema.Types.ObjectId, ref: "List" }],
 });
 
 const BoardModel = model("Board", boardSchema);

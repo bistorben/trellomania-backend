@@ -1,19 +1,35 @@
 import ListModel from "../models/listModel.js";
+import BoardModel from "../models/boardModel.js";
 
 const getAllLists = async (req, res, next) => {
+  const { boardId } = req.params;
   try {
-    const lists = await ListModel.find({});
-    res.status(200).send(lists);
+    const boardWithLists = await BoardModel.findById(boardId).populate("lists");
+
+    res.status(200).send(boardWithLists.lists);
   } catch (err) {
     next(err);
   }
 };
 
 const addList = async (req, res, next) => {
-  const listData = req.body;
+  const { title, boardId } = req.body;
   try {
-    const list = await ListModel.create(listData);
-    res.send(list);
+    const list = await ListModel.create({ title });
+
+    const board = await BoardModel.findByIdAndUpdate(
+      boardId,
+      { $push: { lists: list._id } },
+      { new: true, safe: true, upsert: false }
+    );
+
+    if (!board) {
+      const err = new Error("Board not found");
+      err.status = 404;
+      throw err;
+    }
+
+    res.status(201).send(list);
   } catch (err) {
     next(err);
   }

@@ -4,6 +4,7 @@ import auth from "../middlewares/auth.js";
 
 const router = express.Router();
 
-router.route("/").get(auth, getAllBoards).post(auth, createBoard);
+router.route("/").post(auth, createBoard);
+router.route("/:userId").get(auth, getAllBoards);
 
 export default router;
