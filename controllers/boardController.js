@@ -1,11 +1,19 @@
 import BoardModel from "../models/boardModel.js";
 import UserModel from "../models/userModel.js";
+import ListModel from "../models/listModel.js";
 
 const createBoard = async (req, res, next) => {
   // const boardData = req.body;
   const { title, userId } = req.body;
   try {
-    const board = await BoardModel.create({ title });
+    // there are better solutions for adding 3 standard lists - a todo for later
+    const list1 = await ListModel.create({ title: "todo" });
+    const list2 = await ListModel.create({ title: "doing" });
+    const list3 = await ListModel.create({ title: "done" });
+    const board = await BoardModel.create({
+      title,
+      lists: [list1._id, list2._id, list3._id],
+    });
 
     const user = await UserModel.findByIdAndUpdate(
       userId,
