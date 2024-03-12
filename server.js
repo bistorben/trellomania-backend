@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import userRouter from "./routes/userRoutes.js";
 import boardRouter from "./routes/boardRouter.js";
 import listRouter from "./routes/listRouter.js";
+import cardRouter from "./routes/cardRouter.js";
 import errorHandler from "./middlewares/errorHandler.js";
 
 const app = express();
@@ -35,10 +36,11 @@ app.use(
 );
 
 // routes
-
+// todo: change all routes to plural
 app.use("/user", userRouter);
 app.use("/board", boardRouter);
 app.use("/list", listRouter);
+app.use("/card", cardRouter);
 
 // error handling middleware
 
