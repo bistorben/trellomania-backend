@@ -83,6 +83,7 @@ const loginUser = async (req, res, next) => {
     });
 
     res.cookie("access_token", token, {
+      path: "/",
       httpOnly: true,
       secure: process.env.NODE_ENV !== "development",
       sameSite: "None",
