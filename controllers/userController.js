@@ -84,6 +84,8 @@ const loginUser = async (req, res, next) => {
 
     res.cookie("access_token", token, {
       httpOnly: true,
+      secure: process.env.NODE_ENV !== "development",
+      sameSite: "None",
       maxAge: 1000 * 60 * 60,
     });
 
