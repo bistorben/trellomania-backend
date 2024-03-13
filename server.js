@@ -24,7 +24,7 @@ mongoose
 mongoose.connection.on("error", () => console.log("Database connection error"));
 
 // for render deployment reasons:
-app.set("trust proxy", 1);
+// app.set("trust proxy", 1);
 
 // middlewares
 
