@@ -86,7 +86,7 @@ const loginUser = async (req, res, next) => {
       path: "/",
       httpOnly: true,
       secure: process.env.NODE_ENV !== "development",
-      sameSite: "None",
+      sameSite: "Lax",
       maxAge: 1000 * 60 * 60,
     });
 
