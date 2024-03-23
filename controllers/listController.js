@@ -1,10 +1,16 @@
 import ListModel from "../models/listModel.js";
 import BoardModel from "../models/boardModel.js";
+import CardModel from "../models/cardModel.js";
 
 const getAllLists = async (req, res, next) => {
   const { boardId } = req.params;
   try {
-    const boardWithLists = await BoardModel.findById(boardId).populate("lists");
+    const boardWithLists = await BoardModel.findById(boardId).populate({
+      path: "lists",
+      populate: {
+        path: "cards",
+      },
+    });
 
     res.status(200).send(boardWithLists.lists);
   } catch (err) {
