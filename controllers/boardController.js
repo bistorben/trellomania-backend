@@ -7,13 +7,35 @@ const createBoard = async (req, res, next) => {
   const { title, userId } = req.body;
   try {
     // there are better solutions for adding 3 standard lists - a todo for later
-    const list1 = await ListModel.create({ title: "todo" });
-    const list2 = await ListModel.create({ title: "doing" });
-    const list3 = await ListModel.create({ title: "done" });
     const board = await BoardModel.create({
       title,
-      lists: [list1._id, list2._id, list3._id],
+      lists: [],
     });
+
+    const list1 = await ListModel.create({
+      boardId: board._id,
+      title: "todo",
+      order: 0,
+    });
+    const list2 = await ListModel.create({
+      boardId: board._id,
+      title: "doing",
+      order: 1,
+    });
+    const list3 = await ListModel.create({
+      boardId: board._id,
+      title: "done",
+      order: 2,
+    });
+
+    board.lists.push(list1._id, list2._id, list3._id);
+
+    await board.save();
+
+    // const board = await BoardModel.create({
+    //   title,
+    //   lists: [list1._id, list2._id, list3._id],
+    // });
 
     const user = await UserModel.findByIdAndUpdate(
       userId,
