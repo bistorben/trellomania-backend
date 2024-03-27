@@ -58,11 +58,51 @@ const createBoard = async (req, res, next) => {
 const getAllBoards = async (req, res, next) => {
   const { userId } = req.params;
   try {
-    const userWithBoards = await UserModel.findById(userId).populate("boards");
-    res.status(200).send(userWithBoards.boards);
+    const userWithBoards = await UserModel.findById(userId).populate([
+      "boards",
+      "sharedBoards",
+    ]);
+    res.status(200).send(userWithBoards);
   } catch (err) {
     next(err);
   }
 };
 
-export { createBoard, getAllBoards };
+const getBoardById = async (req, res, next) => {
+  const { boardId } = req.params;
+
+  try {
+    const board = await BoardModel.findById(boardId);
+
+    if (!board) {
+      const err = new Error("No Board with this ID");
+      throw err;
+    }
+    res.status(200).send(board);
+  } catch (err) {
+    next(err);
+  }
+};
+// still in progess, just a prototype right now
+const shareBoardWithUser = async (req, res, next) => {
+  const { boardId, email } = req.body;
+  try {
+    const user = await UserModel.findOne({ email });
+
+    if (!user) {
+      const err = new Error("There is no user with this email");
+      throw err;
+    }
+
+    user.sharedBoards.push(boardId);
+    await user.save();
+    console.log(boardId);
+    console.log(email);
+    console.log(user);
+    res.send(user);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export { createBoard, getAllBoards, getBoardById, shareBoardWithUser };

@@ -3,11 +3,11 @@ import jwt from "jsonwebtoken";
 // verify JSON WEB TOKEN (JWT)
 const auth = (req, res, next) => {
   const token = req.cookies.access_token;
-  console.log("TOKEN", token);
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET);
 
     req.tokenPayload = payload;
+    console.log(payload);
 
     next();
   } catch (err) {

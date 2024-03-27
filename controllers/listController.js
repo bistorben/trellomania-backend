@@ -77,10 +77,19 @@ const updateListOrder = async (req, res, next) => {
     await ListModel.findByIdAndUpdate(sourceList.sourceListId, {
       order: sourceList.newOrder,
     });
+
+    const updatedBoardWithLists = await BoardModel.findById(boardId).populate({
+      path: "lists",
+      populate: {
+        path: "cards",
+      },
+    });
+
+    updatedBoardWithLists.lists.sort((a, b) => a.order - b.order);
+    res.send(updatedBoardWithLists.lists);
   } catch (err) {
     next(err);
   }
-  res.send(req.body);
 };
 
 const deleteList = async (req, res, next) => {
@@ -99,4 +108,24 @@ const deleteList = async (req, res, next) => {
   }
 };
 
-export { getAllLists, addList, deleteList, updateListOrder };
+const changeTitleById = async (req, res, next) => {
+  const { title, listId } = req.body;
+  try {
+    console.log(title);
+    console.log(listId);
+
+    const list = await ListModel.findByIdAndUpdate(
+      listId,
+      { title: title },
+      { new: true, safe: true, upsert: false }
+    );
+
+    console.log("LIST", list);
+
+    res.send(list);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export { getAllLists, addList, deleteList, updateListOrder, changeTitleById };
