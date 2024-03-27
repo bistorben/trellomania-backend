@@ -18,6 +18,7 @@ const userSchema = new Schema(
       required: true,
     },
     boards: [{ type: Schema.Types.ObjectId, ref: "Board" }],
+    sharedBoards: [{ type: Schema.Types.ObjectId, ref: "Board" }],
   },
   { timestamps: true }
 );
