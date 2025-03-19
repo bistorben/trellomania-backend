@@ -9,7 +9,11 @@ As part of my training to become a full-stack web developer (MERN stack) at DCI,
 - **Card Management**: Create, edit, move, and delete cards  
 - **Drag & Drop Support**: Move cards between lists using drag & drop  
 - **User Authentication**: Sign-up/Login with JSON Web Token (JWT)  
-- **Protected Routes**: Only authenticated users can access boards  
+- **Protected Routes**: Only authenticated users can access boards
+
+## Project Demo
+
+![Projekt-Demo](https://github.com/bistorben/trellomania-frontend/raw/main/public/demo.gif)
 
 ## Project Screenshots
 
